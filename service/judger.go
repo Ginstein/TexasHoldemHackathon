@@ -69,17 +69,16 @@ func NewTexasHoldemJudger(players model.Players, publicCards model.Cards) (judge
 func (p *TexasHoldemJudger) Judge() (err error) {
 	for _, player := range p.players {
 		var cards = append(p.publicCards, player.HoldCards...)
-		player.PokerHands, player.Score, err = judgePlayer(cards)
+		player.PokerHands, err = playerBestPokerHands(cards)
 	}
 	sort.Slice(p.players, func(i, j int) bool {
 		var playerI, playerJ = p.players[i], p.players[j]
-		return playerI.Score > playerJ.Score
+		return utils.PokerHandsCompare(playerI.PokerHands, playerJ.PokerHands) == model.Greater
 	})
 	p.winners = []string{p.players[0].ID}
 	// 多名获胜者
-	var winnerScore = p.players[0].Score
 	for index := 1; index < len(p.players); index++ {
-		if p.players[index].Score != winnerScore {
+		if utils.PokerHandsCompare(p.players[0].PokerHands, p.players[index].PokerHands) != model.Equal {
 			break
 		}
 		p.winners = append(p.winners, p.players[index].ID)
@@ -87,8 +86,11 @@ func (p *TexasHoldemJudger) Judge() (err error) {
 	return
 }
 
-// judgePlayer 判定玩家牌型
-func judgePlayer(cards model.Cards) (pokerHands model.PokerHands, score int, err error) {
+// playerBestPokerHands 选取玩家最优牌形
+func playerBestPokerHands(cards model.Cards) (pokerHands model.PokerHands, err error) {
+	// init
+	pokerHands.PokerHandsType = model.HighCard
+	pokerHands.Strengths = []int{-1}
 	// Pick five cards out of seven
 	for _, mask := range masks {
 		var pickedCards model.Cards
@@ -98,13 +100,12 @@ func judgePlayer(cards model.Cards) (pokerHands model.PokerHands, score int, err
 			}
 		}
 		var curPokerHands model.PokerHands
-		var curScore int
-		if curPokerHands, curScore, err = utils.PokerHandsJudge(pickedCards); err != nil {
+		if curPokerHands, err = utils.AnalyzePokerHands(pickedCards); err != nil {
 			return
 		}
-		if curScore > score {
+		// 选取最优解
+		if utils.PokerHandsCompare(curPokerHands, pokerHands) == model.Greater {
 			pokerHands = curPokerHands
-			score = curScore
 		}
 	}
 	return

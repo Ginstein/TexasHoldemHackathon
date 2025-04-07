@@ -23,9 +23,7 @@ const (
 	Ace   CardRank = "A"
 )
 
-var CardRanks = []CardRank{Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King, Ace}
-
-var CardRanksValueMap = map[CardRank]int{
+var CardRanksWeightMap = map[CardRank]int{
 	Two:   2,
 	Three: 3,
 	Four:  4,
@@ -50,9 +48,7 @@ const (
 	Diamond CardSuit = "♦"
 )
 
-var CardSuits = []CardSuit{Club, Diamond, Heart, Spade}
-
-var CardSuitsValueMap = map[CardSuit]int{
+var CardSuitsWeightMap = map[CardSuit]int{
 	Spade:   4,
 	Heart:   3,
 	Club:    2,
@@ -70,9 +66,9 @@ func (c Cards) Sort() {
 	sort.Slice(c, func(i, j int) bool {
 		var cardI, cardJ = c[i], c[j]
 		if cardI.Rank != cardJ.Rank {
-			return CardRanksValueMap[cardI.Rank] > CardRanksValueMap[cardJ.Rank]
+			return CardRanksWeightMap[cardI.Rank] > CardRanksWeightMap[cardJ.Rank]
 		}
-		return CardSuitsValueMap[cardI.Suit] > CardSuitsValueMap[cardJ.Suit]
+		return CardSuitsWeightMap[cardI.Suit] > CardSuitsWeightMap[cardJ.Suit]
 	})
 }
 
@@ -81,7 +77,7 @@ const maxCardsRankValue = 15
 // Counter ...
 func (c Cards) Counter() (counter [maxCardsRankValue]int) {
 	for _, card := range c {
-		counter[CardRanksValueMap[card.Rank]]++
+		counter[CardRanksWeightMap[card.Rank]]++
 	}
 	return counter
 }
@@ -91,11 +87,11 @@ func (c Cards) Check() (ok bool) {
 	var uniqCardsMap = make(map[string]bool, len(c))
 	for _, card := range c {
 		// check rank
-		if _, ok = CardRanksValueMap[card.Rank]; !ok {
+		if _, ok = CardRanksWeightMap[card.Rank]; !ok {
 			return false
 		}
 		// check suit
-		if _, ok = CardSuitsValueMap[card.Suit]; !ok {
+		if _, ok = CardSuitsWeightMap[card.Suit]; !ok {
 			return false
 		}
 		var uniqKey = fmt.Sprintf("%s:%s", card.Rank, card.Suit)
