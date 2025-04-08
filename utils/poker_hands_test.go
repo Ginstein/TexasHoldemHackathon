@@ -9,14 +9,14 @@ import (
 var _ = Describe("PokerHands", func() {
 	Context("cards number is not 5", func() {
 		It("should return error", func() {
-			_, err := AnalyzePokerHands([]model.Card{})
+			_, err := AnalyzePokerHands(model.Cards{})
 			Expect(err).To(Equal(model.PickedCardsCountErr))
 		})
 	})
 
 	Context("RoyalFlush", func() {
 		It("should return RoyalFlush", func() {
-			pokerHands, err := AnalyzePokerHands([]model.Card{
+			pokerHands, err := AnalyzePokerHands(model.Cards{
 				{Rank: model.Ace, Suit: model.Spade},
 				{Rank: model.King, Suit: model.Spade},
 				{Rank: model.Queen, Suit: model.Spade},
@@ -28,7 +28,7 @@ var _ = Describe("PokerHands", func() {
 		})
 
 		It("should return RoyalFlush", func() {
-			pokerHands, err := AnalyzePokerHands([]model.Card{
+			pokerHands, err := AnalyzePokerHands(model.Cards{
 				{Rank: model.Ace, Suit: model.Heart},
 				{Rank: model.King, Suit: model.Heart},
 				{Rank: model.Queen, Suit: model.Heart},
@@ -43,7 +43,7 @@ var _ = Describe("PokerHands", func() {
 
 	Context("StraightFlush", func() {
 		It("should return StraightFlush", func() {
-			pokerHands, err := AnalyzePokerHands([]model.Card{
+			pokerHands, err := AnalyzePokerHands(model.Cards{
 				{Rank: model.King, Suit: model.Club},
 				{Rank: model.Queen, Suit: model.Club},
 				{Rank: model.Jack, Suit: model.Club},
@@ -58,7 +58,7 @@ var _ = Describe("PokerHands", func() {
 
 	Context("FourOfAKind", func() {
 		It("should return FourOfAKind", func() {
-			pokerHands, err := AnalyzePokerHands([]model.Card{
+			pokerHands, err := AnalyzePokerHands(model.Cards{
 				{Rank: model.Seven, Suit: model.Club},
 				{Rank: model.Seven, Suit: model.Heart},
 				{Rank: model.Seven, Suit: model.Spade},
@@ -73,7 +73,7 @@ var _ = Describe("PokerHands", func() {
 
 	Context("FullHouse", func() {
 		It("should return FullHouse", func() {
-			pokerHands, err := AnalyzePokerHands([]model.Card{
+			pokerHands, err := AnalyzePokerHands(model.Cards{
 				{Rank: model.Five, Suit: model.Club},
 				{Rank: model.Five, Suit: model.Heart},
 				{Rank: model.Five, Suit: model.Spade},
@@ -88,7 +88,7 @@ var _ = Describe("PokerHands", func() {
 
 	Context("Flush", func() {
 		It("should return Flush", func() {
-			pokerHands, err := AnalyzePokerHands([]model.Card{
+			pokerHands, err := AnalyzePokerHands(model.Cards{
 				{Rank: model.Two, Suit: model.Club},
 				{Rank: model.Ace, Suit: model.Club},
 				{Rank: model.Four, Suit: model.Club},
@@ -103,7 +103,7 @@ var _ = Describe("PokerHands", func() {
 
 	Context("Straight", func() {
 		It("should return Straight", func() {
-			pokerHands, err := AnalyzePokerHands([]model.Card{
+			pokerHands, err := AnalyzePokerHands(model.Cards{
 				{Rank: model.Seven, Suit: model.Club},
 				{Rank: model.Eight, Suit: model.Heart},
 				{Rank: model.Five, Suit: model.Spade},
@@ -116,7 +116,7 @@ var _ = Describe("PokerHands", func() {
 		})
 
 		It("should return Straight", func() {
-			pokerHands, err := AnalyzePokerHands([]model.Card{
+			pokerHands, err := AnalyzePokerHands(model.Cards{
 				{Rank: model.Ace, Suit: model.Club},
 				{Rank: model.Five, Suit: model.Heart},
 				{Rank: model.Two, Suit: model.Spade},
@@ -131,7 +131,7 @@ var _ = Describe("PokerHands", func() {
 
 	Context("ThreeOfAKind", func() {
 		It("should return ThreeOfAKind", func() {
-			pokerHands, err := AnalyzePokerHands([]model.Card{
+			pokerHands, err := AnalyzePokerHands(model.Cards{
 				{Rank: model.Seven, Suit: model.Club},
 				{Rank: model.Seven, Suit: model.Heart},
 				{Rank: model.Seven, Suit: model.Spade},
@@ -146,7 +146,7 @@ var _ = Describe("PokerHands", func() {
 
 	Context("TwoPairs", func() {
 		It("should return TwoPairs", func() {
-			pokerHands, err := AnalyzePokerHands([]model.Card{
+			pokerHands, err := AnalyzePokerHands(model.Cards{
 				{Rank: model.Seven, Suit: model.Club},
 				{Rank: model.Seven, Suit: model.Heart},
 				{Rank: model.Ace, Suit: model.Spade},
@@ -161,7 +161,7 @@ var _ = Describe("PokerHands", func() {
 
 	Context("OnePair", func() {
 		It("should return OnePair", func() {
-			pokerHands, err := AnalyzePokerHands([]model.Card{
+			pokerHands, err := AnalyzePokerHands(model.Cards{
 				{Rank: model.Seven, Suit: model.Club},
 				{Rank: model.Seven, Suit: model.Heart},
 				{Rank: model.Queen, Suit: model.Spade},
@@ -176,7 +176,7 @@ var _ = Describe("PokerHands", func() {
 
 	Context("HighCard", func() {
 		It("should return HighCard", func() {
-			pokerHands, err := AnalyzePokerHands([]model.Card{
+			pokerHands, err := AnalyzePokerHands(model.Cards{
 				{Rank: model.Seven, Suit: model.Club},
 				{Rank: model.Queen, Suit: model.Heart},
 				{Rank: model.Eight, Suit: model.Spade},

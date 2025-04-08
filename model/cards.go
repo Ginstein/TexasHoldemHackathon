@@ -60,7 +60,7 @@ type Card struct {
 	Suit CardSuit
 }
 
-type Cards []Card
+type Cards []*Card
 
 func (c Cards) Sort() {
 	sort.Slice(c, func(i, j int) bool {

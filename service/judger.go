@@ -34,7 +34,7 @@ type TexasHoldemJudger struct {
 // NewTexasHoldemJudger 创建一个新的德州扑克判定器
 // players 玩家列表
 // publicCards 公共牌
-func NewTexasHoldemJudger(players model.Players, publicCards model.Cards) (judge *TexasHoldemJudger, err error) {
+func NewTexasHoldemJudger(players model.Players, publicCards model.Cards) (judger *TexasHoldemJudger, err error) {
 	if len(players) < model.MinPlayerCountLimit {
 		err = model.MinPlayerCountErr
 		return
@@ -58,7 +58,7 @@ func NewTexasHoldemJudger(players model.Players, publicCards model.Cards) (judge
 		err = model.CardsCheckErr
 		return
 	}
-	judge = &TexasHoldemJudger{
+	judger = &TexasHoldemJudger{
 		players:     players,
 		publicCards: publicCards,
 	}
@@ -66,7 +66,7 @@ func NewTexasHoldemJudger(players model.Players, publicCards model.Cards) (judge
 }
 
 // Judge 判定牌型
-func (p *TexasHoldemJudger) Judge() (err error) {
+func (p *TexasHoldemJudger) Judge() (winners []string, err error) {
 	for _, player := range p.players {
 		var cards = append(p.publicCards, player.HoldCards...)
 		player.PokerHands, err = playerBestPokerHands(cards)
@@ -83,6 +83,7 @@ func (p *TexasHoldemJudger) Judge() (err error) {
 		}
 		p.winners = append(p.winners, p.players[index].ID)
 	}
+	winners = p.winners
 	return
 }
 

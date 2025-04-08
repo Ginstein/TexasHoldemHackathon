@@ -6,4 +6,4 @@ type Player struct {
 	PokerHands PokerHands // 牌形
 }
 
-type Players []Player
+type Players []*Player
